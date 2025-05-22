@@ -6,7 +6,6 @@ This repository provides a curated collection of C++ code templates tailored for
 
 ## Table of Contents
 
-* [Array & Hashing](#array--hashing)
 * [Stack](#stack)
 * [Two Pointers](#two-pointers)
 * [Binary Search](#binary-search)
@@ -23,9 +22,30 @@ This repository provides a curated collection of C++ code templates tailored for
 * [Bit Manipulation](#bit-manipulation)
 * [Math & Geometry](#math--geometry)
 
-## Array & Hashing
-
 ## Stack
+
+### Monotonic Stack
+
+```cpp
+class Solution {
+public:
+    // time/space: O(n)/O(n)
+    vector<int> dailyTemperatures(vector<int>& temperatures) {
+        int n = temperatures.size();
+        vector<int> stk, answer(n, 0);
+        for (int i = 0; i < n; i++) {
+            while (!stk.empty() && (temperatures[stk.back()] < temperatures[i])) {
+                answer[stk.back()] = (i - stk.back());
+                stk.pop_back();
+            }
+            stk.push_back(i);
+        }
+        return answer;
+    }
+};
+```
+
+* [739. Daily Temperatures](https://leetcode.com/problems/daily-temperatures/)
 
 ## Two Pointers
 
