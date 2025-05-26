@@ -45,7 +45,30 @@ public:
 };
 ```
 
+```cpp
+class Solution {
+public:
+    // time/space: O(n^2)/O(1)
+    int threeSumClosest(vector<int>& nums, int target) {
+        sort(nums.begin(), nums.end());
+        int n = nums.size(), closest = nums[0] + nums[1] + nums[2];
+        for (int i = 0; i < n; i++) {
+            int l = i + 1, r = n - 1;
+            while (l < r) {
+                int sum = nums[i] + nums[l] + nums[r];
+                if (sum == target) return sum;
+                if (abs(sum - target) < abs(closest - target)) closest = sum;
+                if (sum < target) l++;
+                else r--;
+            }
+        }
+        return closest;
+    }
+};
+```
+
 * [739. Daily Temperatures](https://leetcode.com/problems/daily-temperatures/)
+* [16. 3Sum Closest](https://leetcode.com/problems/3sum-closest/description/)
 
 ## Two Pointers
 
