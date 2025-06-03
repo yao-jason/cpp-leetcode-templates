@@ -90,6 +90,57 @@ public:
 
 ## Binary Search
 
+```cpp
+class Solution {
+public:
+    // time/space: O(nlogK)/O(1)
+    int minEatingSpeed(vector<int>& piles, int h) {
+        int l = 1, r = *max_element(piles.begin(), piles.end());
+        while (l < r) {
+            int k = l + (r - l) / 2;
+            if (getHour(piles, k) <= h) r = k;
+            else l = k + 1;
+        }
+        return l;
+    }
+private:
+    int getHour(vector<int>& piles, int k) {
+        int hour = 0;
+        for (auto& p : piles) hour += ((p + k - 1) / k);
+        return hour;
+    }
+};
+```
+
+```cpp
+class Solution {
+public:
+    // time/space: O(log(m + n))/O(log(m + n))
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        int k1 = (nums1.size() + nums2.size() + 1) / 2;
+        int k2 = (nums1.size() + nums2.size() + 2) / 2;
+        return (double)(getKth(nums1, 0, nums2, 0, k1) + getKth(nums1, 0, nums2, 0, k2)) / 2.0;
+    }
+private:
+    int getKth(vector<int>& nums1, int l1, vector<int>& nums2, int l2, int k) {
+        // terminate
+        if (l1 >= nums1.size()) return nums2[l2 + k - 1];
+        if (l2 >= nums2.size()) return nums1[l1 + k - 1];
+        if (k == 1) return min(nums1[l1], nums2[l2]);
+
+        // enumerate
+        int m1 = l1 + (k / 2) - 1, m2 = l2 + (k / 2) - 1;
+        int median1 = (m1 < nums1.size()) ? nums1[m1] : INT_MAX;
+        int median2 = (m2 < nums2.size()) ? nums2[m2] : INT_MAX;
+        if (median1 <= median2) return getKth(nums1, m1 + 1, nums2, l2, k - (k / 2));
+        return getKth(nums1, l1, nums2, m2 + 1, k - (k / 2));
+    }
+};
+```
+
+* [875. Koko Eating Bananas](https://leetcode.com/problems/koko-eating-bananas/description/)
+* [4. Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/description/)
+
 ## Sliding Window
 
 ## Linked List
