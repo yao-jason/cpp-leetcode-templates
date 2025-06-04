@@ -183,8 +183,28 @@ public:
 };
 ```
 
+```cpp
+class Solution {
+public:
+    // time/space: O(n)/O(1)
+    int numSubarrayBoundedMax(vector<int>& nums, int left, int right) {
+        return helper(nums, right) - helper(nums, left - 1);
+    }
+private:
+    int helper(vector<int>& nums, int bound) {
+        int count = 0;
+        for (int l = 0, r = 0; r < nums.size(); r++) {
+            if (nums[r] <= bound) count += (r - l + 1);
+            else l = r + 1;
+        }
+        return count;
+    }
+};
+```
+
 * [76. Minimum Window Substring](https://leetcode.com/problems/minimum-window-substring/description/)
 * [239. Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum/description/)
+* [795. Number of Subarrays with Bounded Maximum](https://leetcode.com/problems/number-of-subarrays-with-bounded-maximum/description/)
 
 ## Linked List
 
