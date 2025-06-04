@@ -143,6 +143,49 @@ private:
 
 ## Sliding Window
 
+```cpp
+class Solution {
+public:
+    // time/space: O(m + n)/O(1)
+    string minWindow(string s, string t) {
+        vector<int> count(128, 0);
+        for (auto& c : t) count[c]++;
+        int bestIndex = 0, bestLength = INT_MAX;
+        for (int l = 0, r = 0; r < s.size(); r++) {
+            count[s[r]]--;
+            while (all_of(count.begin(), count.end(), [](int x){return (x <= 0);})) {
+                if ((r - l + 1) < bestLength) bestIndex = l, bestLength = r - l + 1;
+                count[s[l++]]++;
+            }
+        }
+        if (bestLength == INT_MAX) return "";
+        return s.substr(bestIndex, bestLength);
+    }
+};
+```
+
+```cpp
+class Solution {
+public:
+    // time/space: O(n)/O(k)
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        int n = nums.size();
+        deque<int> dq;
+        vector<int> result;
+        for (int i = 0; i < n; i++) {
+            while (!dq.empty() && (dq.front() <= (i - k))) dq.pop_front();
+            while (!dq.empty() && (nums[dq.back()] <= nums[i])) dq.pop_back();
+            dq.push_back(i);
+            if (i >= (k - 1)) result.push_back(nums[dq.front()]);
+        }
+        return result;
+    }
+};
+```
+
+* [76. Minimum Window Substring](https://leetcode.com/problems/minimum-window-substring/description/)
+* [239. Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum/description/)
+
 ## Linked List
 
 ## Trees
