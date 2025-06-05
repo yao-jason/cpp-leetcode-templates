@@ -227,7 +227,7 @@ private:
 ```cpp
 class Solution {
 public:
-    // time/space: O(nk)/O(k)
+    // time/space: O(nk + mk)/O(k+m)
     string smallestEquivalentString(string s1, string s2, string baseStr) {
         int n = s1.size(), k = 128;
         vector<int> root(k);
