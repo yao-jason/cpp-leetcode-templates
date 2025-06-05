@@ -86,7 +86,7 @@ public:
 ```
 
 * [283. Move Zeroes](https://leetcode.com/problems/move-zeroes/)
-* [16. 3Sum Closest](https://leetcode.com/problems/3sum-closest/description/)
+* [16. 3Sum Closest](https://leetcode.com/problems/3sum-closest/)
 
 ## Binary Search
 
@@ -138,8 +138,8 @@ private:
 };
 ```
 
-* [875. Koko Eating Bananas](https://leetcode.com/problems/koko-eating-bananas/description/)
-* [4. Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/description/)
+* [875. Koko Eating Bananas](https://leetcode.com/problems/koko-eating-bananas/)
+* [4. Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/)
 
 ## Sliding Window
 
@@ -202,9 +202,9 @@ private:
 };
 ```
 
-* [76. Minimum Window Substring](https://leetcode.com/problems/minimum-window-substring/description/)
-* [239. Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum/description/)
-* [795. Number of Subarrays with Bounded Maximum](https://leetcode.com/problems/number-of-subarrays-with-bounded-maximum/description/)
+* [76. Minimum Window Substring](https://leetcode.com/problems/minimum-window-substring/)
+* [239. Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum/)
+* [795. Number of Subarrays with Bounded Maximum](https://leetcode.com/problems/number-of-subarrays-with-bounded-maximum/)
 
 ## Linked List
 
@@ -221,6 +221,36 @@ private:
 ## Backtracking
 
 ## Graphs
+
+### Union Find
+
+```cpp
+class Solution {
+public:
+    // time/space: O(nk)/O(k)
+    string smallestEquivalentString(string s1, string s2, string baseStr) {
+        int n = s1.size(), k = 128;
+        vector<int> root(k);
+        for (int c = 0; c < k; c++) root[c] = c;
+        for (int i = 0; i < n; i++) connect(root, s1[i], s2[i]);
+        string result;
+        for (auto& c : baseStr) result.push_back(find(root, c));
+        return result;
+    }
+private:
+    int find(vector<int>& root, int x) {
+        if (root[x] == x) return x;
+        return root[x] = find(root, root[x]);
+    }
+    void connect(vector<int>& root, int x, int y) {
+        int rootX = find(root, x);
+        int rootY = find(root, y);
+        if (rootX != rootY) root[max(rootX, rootY)] = min(rootX, rootY);
+    }
+};
+```
+
+* [1061. Lexicographically Smallest Equivalent String](https://leetcode.com/problems/lexicographically-smallest-equivalent-string)
 
 ## Dynamic Programming
 
