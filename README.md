@@ -208,6 +208,86 @@ private:
 
 ## Linked List
 
+```cpp
+class Solution {
+public:
+    // time/space: O(nlogk)/O(1)
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        if (lists.empty()) return NULL;
+        int k = lists.size();
+        for (int interval = 1; interval < k; interval *= 2) {
+            for (int i = 0; (i + interval) < k; i += (interval * 2)) {
+                lists[i] = merge2Lists(lists[i], lists[i + interval]);
+            }
+        }
+        return lists[0];
+    }
+private:
+    ListNode* merge2Lists(ListNode* head1, ListNode* head2) {
+        ListNode* dummy = new ListNode();
+        ListNode* prev = dummy;
+        while ((head1 != NULL) || (head2 != NULL)) {
+            int value1 = (head1 == NULL) ? INT_MAX : head1->val;
+            int value2 = (head2 == NULL) ? INT_MAX : head2->val;
+            if (value1 <= value2) prev->next = head1, head1 = head1->next;
+            else prev->next = head2, head2 = head2->next;
+            prev = prev->next;
+        }
+        return dummy->next;
+    }
+```
+
+```cpp
+class Solution {
+public:
+    // time/space: O(n)/O(1)
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        ListNode *dummy = new ListNode(0, head);
+        ListNode *prev = dummy;
+        while (head != NULL) {
+            ListNode* tail = head;
+            for (int i = 1; (i < k) && (tail != NULL); i++) tail = tail->next;
+            if (tail == NULL) break;
+            ListNode* next = tail->next;
+            tail->next = NULL;
+            reverseList(head);
+            prev->next = tail, head->next = next;
+            prev = head, head = next;
+        }
+        return dummy->next;
+    }
+private:
+    void reverseList(ListNode* head) {
+        ListNode *prev = NULL, *curr = head;
+        while (curr != NULL) {
+            ListNode* next = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = next;
+        }
+    }
+};
+```
+
+```cpp
+class Solution {
+public:
+    // time/space: O(n)/(1)
+    int findDuplicate(vector<int>& nums) {
+        int slow = nums[0];
+        int fast = nums[nums[0]];
+        while (slow != fast) slow = nums[slow], fast = nums[nums[fast]];
+        int num = 0;
+        while (num != fast) num = nums[num], fast = nums[fast];
+        return num;
+    }
+};
+```
+
+* [23. Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists)
+* [25. Reverse Nodes in k-Group](https://leetcode.com/problems/reverse-nodes-in-k-group)
+* [287. Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number)
+
 ## Trees
 
 ## Tries
