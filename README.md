@@ -290,6 +290,57 @@ public:
 
 ## Trees
 
+```cpp
+class Solution {
+public:
+    // time/space: O(n)/O(h)
+    bool isValidBST(TreeNode* root, long long leftBound = LLONG_MIN, long long rightBound = LLONG_MAX) {
+        // terminate
+        if (root == NULL) return true;
+        if (root->val <= leftBound) return false;
+        if (rightBound <= root->val) return false;
+
+        // enumerate
+        return (
+            isValidBST(root->left, leftBound, root->val) &&
+            isValidBST(root->right, root->val, rightBound)
+        );
+    }
+};
+```
+
+```cpp
+class Solution {
+public:
+    // time/space: O(n)/O(n)
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        n = preorder.size();
+        if (n == 0) return NULL;
+        for (int i = 0; i < n; i++) valueToInorderIndex[inorder[i]] = i;
+        int index = 0;
+        return helper(preorder, index, 0, n - 1);
+    }
+private:
+    int n;
+    unordered_map<int, int> valueToInorderIndex;
+    TreeNode* helper(vector<int>& preorder, int& index, int l, int r) {
+        // terminate
+        if (index >= n) return NULL;
+        if (l > r) return NULL;
+
+        // enumerate
+        int value = preorder[index++];
+        TreeNode* node = new TreeNode(value);
+        node->left = helper(preorder, index, l, valueToInorderIndex[value] - 1);
+        node->right = helper(preorder, index, valueToInorderIndex[value] + 1, r);
+        return node;
+    }
+};
+```
+
+* [98. Validate Binary Search Tree](https://leetcode.com/problems/validate-binary-search-tree/description/)
+* [105. Construct Binary Tree from Preorder and Inorder Traversal](https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/description/)
+
 ## Tries
 
 ## Heap / Priority Queue
