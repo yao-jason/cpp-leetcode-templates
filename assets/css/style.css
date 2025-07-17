@@ -1,0 +1,118 @@
+/* Reset */
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background-color: #0d1117;
+  color: #c9d1d9;
+}
+header {
+  background: #161b22;
+  padding: 1rem;
+  text-align: center;
+  border-bottom: 1px solid #30363d;
+}
+header h1 {
+  margin: 0;
+  color: #58a6ff;
+}
+
+/* Pattern Tabs */
+#pattern-tabs {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(120px, max-content));
+  justify-content: center;
+  gap: 0.5rem 1rem;
+  padding: 0.5rem;
+  background: #161b22;
+  box-sizing: border-box;
+}
+#pattern-tabs button {
+  background: #21262d;
+  color: #c9d1d9;
+  border: none;
+  border-radius: 9999px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  margin-bottom: 0.25rem;
+}
+#pattern-tabs button.active {
+  background: #58a6ff;
+  color: #0d1117;
+  font-weight: bold;
+}
+#pattern-tabs button:hover {
+  background: #30363d;
+  transform: translateY(-1px);
+}
+#pattern-tabs button:focus {
+  outline: 2px solid #58a6ff;
+  outline-offset: 2px;
+}
+@media (max-width: 768px) {
+  #pattern-tabs {
+    grid-template-columns: repeat(auto-fit, minmax(100px, auto));
+  }
+}
+@media (max-width: 480px) {
+  #pattern-tabs {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Grid Container for Cards */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  padding: 1rem;
+  max-width: 1200px;
+  margin: 0;
+  justify-content: start;
+  box-sizing: border-box;
+}
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Card */
+.card {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+}
+.card h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+.card h2 a {
+  color: #58a6ff;
+  text-decoration: none;
+}
+.card h2 a:hover {
+  text-decoration: underline;
+}
+.card pre {
+  background: #0d1117;
+  padding: 0.75rem;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+.card code {
+  font-family: "Source Code Pro", monospace;
+  font-size: 0.9rem;
+  color: #c9d1d9;
+  white-space: pre;
+  line-height: 1.4;
+}

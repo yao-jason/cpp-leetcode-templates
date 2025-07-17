@@ -1,0 +1,95 @@
+{
+  "Stack": [
+    {
+      "title": "Daily Temperatures",
+      "link": "https://leetcode.com/problems/daily-temperatures/",
+      "code": "class Solution {\npublic:\n    // time/space: O(n)/O(n)\n    vector<int> dailyTemperatures(vector<int>& temperatures) {\n        int n = temperatures.size();\n        vector<int> stk, answer(n, 0);\n        for (int i = 0; i < n; i++) {\n            while (!stk.empty() && (temperatures[stk.back()] < temperatures[i])) {\n                answer[stk.back()] = (i - stk.back());\n                stk.pop_back();\n            }\n            stk.push_back(i);\n        }\n        return answer;\n    }\n};"
+    }
+  ],
+  "Two Pointers": [
+    {
+      "title": "Move Zeroes",
+      "link": "https://leetcode.com/problems/move-zeroes/",
+      "code": "class Solution {\npublic:\n    // time/space: O(n)/O(1)\n    void moveZeroes(vector<int>& nums) {\n        int l = 0;\n        for (int r = 0; r < nums.size(); r++) {\n            if (nums[r] != 0) nums[l++] = nums[r];\n        }\n        while (l < nums.size()) nums[l++] = 0;\n    }\n};"
+    },
+    {
+      "title": "3Sum Closest",
+      "link": "https://leetcode.com/problems/3sum-closest/",
+      "code": "class Solution {\npublic:\n    // time/space: O(n^2)/O(1)\n    int threeSumClosest(vector<int>& nums, int target) {\n        sort(nums.begin(), nums.end());\n        int n = nums.size(), closest = nums[0] + nums[1] + nums[2];\n        for (int i = 0; i < n; i++) {\n            int l = i + 1, r = n - 1;\n            while (l < r) {\n                int sum = nums[i] + nums[l] + nums[r];\n                if (sum == target) return sum;\n                if (abs(sum - target) < abs(closest - target)) closest = sum;\n                if (sum < target) l++; else r--;\n            }\n        }\n        return closest;\n    }\n};"
+    }
+  ],
+  "Binary Search": [
+    {
+      "title": "Koko Eating Bananas",
+      "link": "https://leetcode.com/problems/koko-eating-bananas/",
+      "code": "class Solution {\npublic:\n    // time/space: O(n log K)/O(1)\n    int minEatingSpeed(vector<int>& piles, int h) {\n        int l = 1, r = *max_element(piles.begin(), piles.end());\n        while (l < r) {\n            int k = l + (r - l) / 2;\n            if (getHour(piles, k) <= h) r = k;\n            else l = k + 1;\n        }\n        return l;\n    }\nprivate:\n    int getHour(vector<int>& piles, int k) {\n        int hour = 0; for (auto& p : piles) hour += (p + k - 1) / k; return hour;\n    }\n};"
+    },
+    {
+      "title": "Median of Two Sorted Arrays",
+      "link": "https://leetcode.com/problems/median-of-two-sorted-arrays/",
+      "code": "class Solution {\npublic:\n    // time/space: O(log(m+n))/O(log(m+n))\n    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {\n        int k1 = (nums1.size() + nums2.size() + 1) / 2;\n        int k2 = (nums1.size() + nums2.size() + 2) / 2;\n        return (getKth(nums1, 0, nums2, 0, k1) + getKth(nums1, 0, nums2, 0, k2)) / 2.0;\n    }\nprivate:\n    int getKth(const vector<int>& a, int i, const vector<int>& b, int j, int k) {\n        if (i >= a.size()) return b[j + k - 1];\n        if (j >= b.size()) return a[i + k - 1];\n        if (k == 1) return min(a[i], b[j]);\n        int m1 = i + k/2 - 1 < a.size() ? a[i + k/2 - 1] : INT_MAX;\n        int m2 = j + k/2 - 1 < b.size() ? b[j + k/2 - 1] : INT_MAX;\n        if (m1 <= m2) return getKth(a, i + k/2, b, j, k - k/2);\n        else return getKth(a, i, b, j + k/2, k - k/2);\n    }\n};"
+    }
+  ],
+  "Sliding Window": [
+    {
+      "title": "Minimum Window Substring",
+      "link": "https://leetcode.com/problems/minimum-window-substring/",
+      "code": "class Solution {\npublic:\n    // time/space: O(m+n)/O(1)\n    string minWindow(string s, string t) {\n        vector<int> count(128, 0); for (char c : t) count[c]++;\n        int bestIndex = 0, bestLength = INT_MAX;\n        for (int l = 0, r = 0; r < s.size(); r++) {\n            count[s[r]]--;\n            while (all_of(count.begin(), count.end(), [](int x){ return x <= 0; })) {\n                if (r - l + 1 < bestLength) bestIndex = l, bestLength = r - l + 1;\n                count[s[l++]]++;\n            }\n        }\n        return bestLength == INT_MAX ? \"\" : s.substr(bestIndex, bestLength);\n    }\n};"
+    },
+    {
+      "title": "Sliding Window Maximum",
+      "link": "https://leetcode.com/problems/sliding-window-maximum/",
+      "code": "class Solution {\npublic:\n    // time/space: O(n)/O(n)\n    vector<int> maxSlidingWindow(vector<int>& nums, int k) {\n        deque<int> dq; vector<int> result;\n        for (int i = 0; i < nums.size(); i++) {\n            if (!dq.empty() && dq.front() <= i - k) dq.pop_front();\n            while (!dq.empty() && nums[dq.back()] <= nums[i]) dq.pop_back();\n            dq.push_back(i);\n            if (i >= k - 1) result.push_back(nums[dq.front()]);\n        }\n        return result;\n    }\n};"
+    },
+    {
+      "title": "Number of Subarrays with Bounded Maximum",
+      "link": "https://leetcode.com/problems/number-of-subarrays-with-bounded-maximum/",
+      "code": "class Solution {\npublic:\n    // time/space: O(n)/O(1)\n    int numSubarrayBoundedMax(vector<int>& nums, int left, int right) {\n        return helper(nums, right) - helper(nums, left - 1);\n    }\nprivate:\n    int helper(vector<int>& nums, int bound) {\n        int res = 0, l = 0;\n        for (int r = 0; r < nums.size(); r++) {\n            if (nums[r] <= bound) res += (r - l + 1);\n            else l = r + 1;\n        }\n        return res;\n    }\n};"
+    }
+  ],
+  "Linked List": [
+    {
+      "title": "Merge k Sorted Lists",
+      "link": "https://leetcode.com/problems/merge-k-sorted-lists/",
+      "code": "class Solution {\npublic:\n    // time/space: O(nk log k)/O(1)\n    ListNode* mergeKLists(vector<ListNode*>& lists) {\n        if (lists.empty()) return nullptr;\n        function<ListNode*(ListNode*, ListNode*)> mergeTwo = [&](ListNode* a, ListNode* b) {\n            ListNode dummy; ListNode* tail = &dummy;\n            while (a && b) {\n                if (a->val < b->val) { tail->next = a; a = a->next; }\n                else { tail->next = b; b = b->next; }\n                tail = tail->next;\n            }\n            tail->next = a ? a : b;\n            return dummy.next;\n        };\n        int interval = 1;\n        while (interval < lists.size()) {\n            for (int i = 0; i + interval < lists.size(); i += interval * 2) {\n                lists[i] = mergeTwo(lists[i], lists[i + interval]);\n            }\n            interval *= 2;\n        }\n        return lists[0];\n    }\n};"
+    },
+    {
+      "title": "Reverse Nodes in k-Group",
+      "link": "https://leetcode.com/problems/reverse-nodes-in-k-group/",
+      "code": "class Solution {\npublic:\n    // time/space: O(n)/O(1)\n    ListNode* reverseKGroup(ListNode* head, int k) {\n        ListNode dummy(0, head), *prev = &dummy;\n        while (true) {\n            ListNode* tail = prev;\n            for (int i = 0; i < k; i++) { tail = tail->next; if (!tail) return dummy.next; }\n            ListNode* next = tail->next;\n            // reverse [prev->next, tail]\n            ListNode* p = prev->next;\n            while (p->next != next) {\n                ListNode* tmp = p->next;\n                p->next = tmp->next;\n                tmp->next = prev->next;\n                prev->next = tmp;\n            }\n            prev = p;\n        }\n    }\n};"
+    },
+    {
+      "title": "Find the Duplicate Number",
+      "link": "https://leetcode.com/problems/find-the-duplicate-number/",
+      "code": "class Solution {\npublic:\n    // time/space: O(n)/O(1)\n    int findDuplicate(vector<int>& nums) {\n        int slow = nums[0], fast = nums[0];\n        do { slow = nums[slow]; fast = nums[nums[fast]]; } while (slow != fast);\n        int ptr = nums[0];\n        while (ptr != slow) { ptr = nums[ptr]; slow = nums[slow]; }\n        return ptr;\n    }\n};"
+    }
+  ],
+  "Trees": [
+    {
+      "title": "Validate BST",
+      "link": "https://leetcode.com/problems/validate-binary-search-tree/description/",
+      "code": "class Solution {\npublic:\n    // time/space: O(n)/O(height)\n    bool isValidBST(TreeNode* root, long long low = LLONG_MIN, long long high = LLONG_MAX) {\n        if (!root) return true;\n        if (root->val <= low || root->val >= high) return false;\n        return isValidBST(root->left, low, root->val) && isValidBST(root->right, root->val, high);\n    }\n};"
+    },
+    {
+      "title": "Construct Binary Tree from Preorder and Inorder Traversal",
+      "link": "https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/description/",
+      "code": "class Solution {\npublic:\n    // time/space: O(n)/O(n)\n    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {\n        unordered_map<int,int> idx; for (int i = 0; i < inorder.size(); i++) idx[inorder[i]] = i;\n        function<TreeNode*(int,int,int)> dfs = [&](int l, int r, int& pi) {\n            if (l > r) return nullptr;\n            int val = preorder[pi++]; TreeNode* node = new TreeNode(val);\n            node->left = dfs(l, idx[val] - 1, pi);\n            node->right = dfs(idx[val] + 1, r, pi);\n            return node;\n        };\n        int pi = 0; return dfs(0, inorder.size() - 1, pi);\n    }\n};"
+    }
+  ],
+  "Tries": [],
+  "Heap / Priority Queue": [],
+  "Intervals": [],
+  "Greedy": [],
+  "Backtracking": [],
+  "Graphs": [],
+  "Union Find": [
+    {
+      "title": "Lexicographically Smallest Equivalent String",
+      "link": "https://leetcode.com/problems/lexicographically-smallest-equivalent-string/",
+      "code": "class Solution {\npublic:\n    // time/space: O(n*k + m*k)/O(k + m)\n    string smallestEquivalentString(string s1, string s2, string baseStr) {\n        vector<int> root(128); iota(root.begin(), root.end(), 0);\n        function<int(int)> find = [&](int x) { return root[x] == x ? x : root[x] = find(root[x]); };\n        for (int i = 0; i < s1.size(); i++) {\n            int a = find(s1[i]), b = find(s2[i]);\n            root[max(a, b)] = min(a, b);\n        }\n        for (char &c : baseStr) c = char(find(c));\n        return baseStr;\n    }\n};"
+    }
+  ],
+  "Dynamic Programming": [],
+  "Bit Manipulation": [],
+  "Math & Geometry": []
+}
