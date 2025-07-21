@@ -1,8 +1,15 @@
 fetch('data.json')
   .then(res => res.json())
   .then(data => {
+    const body = document.body;
+    const sidebar = document.getElementById('sidebar');
+    const toggle = document.getElementById('sidebar-toggle');
     const patternTabs = document.getElementById('pattern-tabs');
     const grid = document.getElementById('card-grid');
+
+    toggle.onclick = () => {
+      body.classList.toggle('sidebar-closed');
+    };
 
     const clear = el => { while (el.firstChild) el.removeChild(el.firstChild); };
 
@@ -11,7 +18,8 @@ fetch('data.json')
       btn.textContent = pattern;
       if (idx === 0) btn.classList.add('active');
       btn.onclick = () => {
-        document.querySelectorAll('#pattern-tabs button').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('#pattern-tabs button')
+          .forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         renderCards(data[pattern]);
       };
@@ -46,4 +54,4 @@ fetch('data.json')
 
     renderCards(data[Object.keys(data)[0]]);
   })
-  .catch(err => console.error('load data.json failed', err));
+  .catch(err => console.error('載入 data.json 失敗', err));

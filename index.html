@@ -2,22 +2,24 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>C++ LeetCode Templates</title>
 
   <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" />
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css"/>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
-
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/style.css"/>
 </head>
 <body>
-  <header>
-    <h1>C++ LeetCode Templates</h1>
-  </header>
+  <aside id="sidebar">
+    <button id="sidebar-toggle">≡</button>
+    <nav id="pattern-tabs"></nav>
+  </aside>
 
-  <nav id="pattern-tabs" class="tab-container"></nav>
-  <main id="card-grid" class="grid-container"></main>
+  <main id="main-content">
+    <div id="card-grid" class="grid-container"></div>
+  </main>
+
   <script>hljs.highlightAll();</script>
   <script src="assets/js/app.js"></script>
 </body>
