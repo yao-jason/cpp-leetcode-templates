@@ -76,7 +76,13 @@
       "code": "class Solution {\npublic:\n    // time/space: O(n)/O(n)\n    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {\n        n = preorder.size();\n        if (n == 0) return NULL;\n        for (int i = 0; i < n; i++) valueToInorderIndex[inorder[i]] = i;\n        int index = 0;\n        return helper(preorder, index, 0, n - 1);\n    }\nprivate:\n    int n;\n    unordered_map<int, int> valueToInorderIndex;\n    TreeNode* helper(vector<int>& preorder, int& index, int l, int r) {\n        // terminate\n        if (index >= n) return NULL;\n        if (l > r) return NULL;\n\n        // enumerate\n        int value = preorder[index++];\n        TreeNode* node = new TreeNode(value);\n        node->left = helper(preorder, index, l, valueToInorderIndex[value] - 1);\n        node->right = helper(preorder, index, valueToInorderIndex[value] + 1, r);\n        return node;\n    }\n};"
     }
   ],
-  "Tries": [],
+  "Tries": [
+    {
+      "title": "208. Implement Trie (Prefix Tree)",
+      "link": "https://leetcode.com/problems/implement-trie-prefix-tree",
+      "code": "class Trie {\npublic:\n    ~Trie() {\n        for (auto& node : next) {\n            if (node != NULL) delete(node);\n        }\n    }\n    \n    void insert(string word) {\n        Trie* node = this;\n        for (auto& c : word) {\n            if (node->next[c - 'a'] == NULL) node->next[c - 'a'] = new Trie();\n            node = node->next[c - 'a'];\n        }\n        node->isEnd = true;\n    }\n    \n    bool search(string word, bool isPrefix = false) {\n        Trie* node = this;\n        for (auto& c : word) {\n            if (node->next[c - 'a'] == NULL) return false;\n            node = node->next[c - 'a'];\n        }\n        if (isPrefix) return true;\n        return node->isEnd;\n    }\n    \n    bool startsWith(string prefix) {\n        return search(prefix, true);\n    }\nprivate:\n    Trie* next[26] = {NULL};\n    bool isEnd = false;\n};"
+    }
+  ],
   "Heap / Priority Queue": [],
   "Intervals": [],
   "Greedy": [],
