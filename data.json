@@ -83,7 +83,23 @@
       "code": "class Trie {\npublic:\n    ~Trie() {\n        for (auto& node : next) {\n            if (node != NULL) delete(node);\n        }\n    }\n    \n    void insert(string word) {\n        Trie* node = this;\n        for (auto& c : word) {\n            if (node->next[c - 'a'] == NULL) node->next[c - 'a'] = new Trie();\n            node = node->next[c - 'a'];\n        }\n        node->isEnd = true;\n    }\n    \n    bool search(string word, bool isPrefix = false) {\n        Trie* node = this;\n        for (auto& c : word) {\n            if (node->next[c - 'a'] == NULL) return false;\n            node = node->next[c - 'a'];\n        }\n        if (isPrefix) return true;\n        return node->isEnd;\n    }\n    \n    bool startsWith(string prefix) {\n        return search(prefix, true);\n    }\nprivate:\n    Trie* next[26] = {NULL};\n    bool isEnd = false;\n};"
     }
   ],
-  "Heap / Priority Queue": [],
+  "Heap / Priority Queue": [
+    {
+      "title": "973. K Closest Points to Origin",
+      "link": "https://leetcode.com/problems/k-closest-points-to-origin/",
+      "code": "class Solution {\npublic:\n    // time/space: O(nlogk)/O(k)\n    vector<vector<int>> kClosest(vector<vector<int>>& points, int k) {\n        priority_queue<tuple<long long, int, int>, vector<tuple<long long, int, int>>, less<>> pq;\n        for (auto& p : points) {\n            pq.push({(1LL * p[0] * p[0]) + (1LL * p[1] * p[1]), p[0], p[1]});\n            if (pq.size() > k) pq.pop();\n        }\n        vector<vector<int>> result;\n        while (!pq.empty()) {\n            auto& [_, x, y] = pq.top();\n            result.push_back({x, y});\n            pq.pop();\n        }\n        return result;\n    }\n};"
+    },
+    {
+      "title": "215. Kth Largest Element in an Array",
+      "link": "https://leetcode.com/problems/kth-largest-element-in-an-array",
+      "code": "class Solution {\npublic:\n    // time/space: O(n)/O(1)\n    int findKthLargest(vector<int>& nums, int k) {\n        int l = 0, r = nums.size() - 1, target = k - 1;\n        while (l <= r) {\n            int p = partition(nums, l, r);\n            if (p == target) return nums[p];\n            if (target < p) r = p - 1;\n            else l = p + 1;\n        }\n        return INT_MAX;\n    }\nprivate:\n    int partition(vector<int>& nums, int l, int r) {\n        swap(nums[l], nums[l + (rand() % (r - l + 1))]);\n        int pivot = nums[l], left = l + 1, right = r;\n        while (left <= right) {\n            if (nums[left] > pivot) left++;\n            else if (nums[right] < pivot) right--;\n            else swap(nums[left++], nums[right--]);\n        }\n        swap(nums[l], nums[right]);\n        return right;\n    }\n};"
+    },
+    {
+      "title": "295. Find Median from Data Stream",
+      "link": "https://leetcode.com/problems/find-median-from-data-stream",
+      "code": "class MedianFinder {\npublic:\n    // time: O(logn)\n    void addNum(int num) {\n        if (minHeap.empty() || (num >= minHeap.top())) minHeap.push(num);\n        else maxHeap.push(num);\n        while (abs((int)(minHeap.size() - maxHeap.size())) >= 2) {\n            if (minHeap.size() > maxHeap.size()) maxHeap.push(minHeap.top()), minHeap.pop();\n            else minHeap.push(maxHeap.top()), maxHeap.pop();\n        }\n    }\n    // time: O(1)\n    double findMedian() {\n        if (minHeap.size() > maxHeap.size()) return (double)(minHeap.top());\n        if (minHeap.size() < maxHeap.size()) return (double)(maxHeap.top());\n        return (((double)(minHeap.top()) + (double)(maxHeap.top())) / 2);\n    }\nprivate:\n    // space: O(n)\n    priority_queue<int, vector<int>, greater<>> minHeap;\n    priority_queue<int, vector<int>, less<>> maxHeap;\n};"
+    }
+  ],
   "Intervals": [],
   "Greedy": [],
   "Backtracking": [],
