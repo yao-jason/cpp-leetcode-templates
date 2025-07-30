@@ -100,7 +100,28 @@
       "code": "class MedianFinder {\npublic:\n    // time: O(logn)\n    void addNum(int num) {\n        if (minHeap.empty() || (num >= minHeap.top())) minHeap.push(num);\n        else maxHeap.push(num);\n        while (abs((int)(minHeap.size() - maxHeap.size())) >= 2) {\n            if (minHeap.size() > maxHeap.size()) maxHeap.push(minHeap.top()), minHeap.pop();\n            else minHeap.push(maxHeap.top()), maxHeap.pop();\n        }\n    }\n    // time: O(1)\n    double findMedian() {\n        if (minHeap.size() > maxHeap.size()) return (double)(minHeap.top());\n        if (minHeap.size() < maxHeap.size()) return (double)(maxHeap.top());\n        return (((double)(minHeap.top()) + (double)(maxHeap.top())) / 2);\n    }\nprivate:\n    // space: O(n)\n    priority_queue<int, vector<int>, greater<>> minHeap;\n    priority_queue<int, vector<int>, less<>> maxHeap;\n};"
     }
   ],
-  "Intervals": [],
+  "Intervals": [
+    {
+      "title": "57. Insert Interval",
+      "link": "https://leetcode.com/problems/insert-interval",
+      "code": "class Solution {\npublic:\n    // time/space: O(n)/O(n)\n    vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {\n        vector<vector<int>> result;\n        int start = newInterval[0], end = newInterval[1];\n        int i = 0, n = intervals.size();\n        while (i < n) {\n            if (intervals[i][1] < start) result.push_back(intervals[i++]);\n            else if (end < intervals[i][0]) break;\n            else {\n                start = min(start, intervals[i][0]);\n                end = max(end, intervals[i][1]);\n                i++;\n            }\n        }\n        result.push_back({start, end});\n        while (i < n) result.push_back(intervals[i++]);\n        return result;\n    }\n};"
+    },
+    {
+      "title": "253. Meeting Rooms II",
+      "link": "https://leetcode.com/problems/meeting-rooms-ii/",
+      "code": "class Solution {\npublic:\n    // time/space: O(nlogn)/O(n)\n    int minMeetingRooms(vector<Interval>& intervals) {\n        map<int, int> count;\n        for (auto& interval : intervals) {\n            count[interval.start]++;\n            count[interval.end]--;\n        }\n        int maxSum = 0, sum = 0;\n        for (auto& [_, cnt] : count) {\n            sum += cnt;\n            maxSum = max(maxSum, sum);\n        }\n        return maxSum;\n    }\n};"
+    },
+    {
+      "title": "435. Non-overlapping Intervals",
+      "link": "https://leetcode.com/problems/non-overlapping-intervals",
+      "code": "class Solution {\npublic:\n    // time/space: O(nlogn)/O(sort)\n    int eraseOverlapIntervals(vector<vector<int>>& intervals) {\n        sort(intervals.begin(), intervals.end());\n        int erase = 0, end = intervals[0][1];\n        for (int i = 1; i < intervals.size(); i++) {\n            if (end <= intervals[i][0]) end = intervals[i][1];\n            else erase++, end = min(end, intervals[i][1]);\n        }\n        return erase;\n    }\n};"
+    },
+    {
+      "title": "1851. Minimum Interval to Include Each Query",
+      "link": "https://leetcode.com/problems/minimum-interval-to-include-each-query",
+      "code": "class Solution {\npublic:\n    // time/space: O(nlogn + mlogm)/O(n + m)\n    vector<int> minInterval(vector<vector<int>>& intervals, vector<int>& queries) {\n        sort(intervals.begin(), intervals.end(), [](auto& a, auto& b){\n            return (a[0] < b[0]);\n        });\n        vector<pair<int, int>> queryIndex;\n        for (int j = 0; j < queries.size(); j++) queryIndex.push_back({queries[j], j});\n        sort(queryIndex.begin(), queryIndex.end(), [](auto& a, auto& b){\n            return (a.first < b.first);\n        });\n\n        vector<int> result(queries.size());\n        priority_queue<vector<int>, vector<vector<int>>, greater<>> pq;\n        for (int i = 0, j = 0; j < queries.size(); j++) {\n            auto& [query, index] = queryIndex[j];\n            while ((i < intervals.size()) && (intervals[i][0] <= query)) {\n                pq.push({intervals[i][1] - intervals[i][0] + 1, intervals[i][1]});\n                i++;\n            }\n            while (!pq.empty() && (pq.top()[1] < query)) pq.pop();\n            result[index] = (pq.empty()) ? (-1) : (pq.top()[0]);\n        }\n        return result;\n    }\n};"
+    }
+  ],
   "Greedy": [],
   "Backtracking": [],
   "Graphs": [],
