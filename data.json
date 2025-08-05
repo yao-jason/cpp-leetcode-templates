@@ -122,7 +122,23 @@
       "code": "class Solution {\npublic:\n    // time/space: O(nlogn + mlogm)/O(n + m)\n    vector<int> minInterval(vector<vector<int>>& intervals, vector<int>& queries) {\n        sort(intervals.begin(), intervals.end(), [](auto& a, auto& b){\n            return (a[0] < b[0]);\n        });\n        vector<pair<int, int>> queryIndex;\n        for (int j = 0; j < queries.size(); j++) queryIndex.push_back({queries[j], j});\n        sort(queryIndex.begin(), queryIndex.end(), [](auto& a, auto& b){\n            return (a.first < b.first);\n        });\n\n        vector<int> result(queries.size());\n        priority_queue<vector<int>, vector<vector<int>>, greater<>> pq;\n        for (int i = 0, j = 0; j < queries.size(); j++) {\n            auto& [query, index] = queryIndex[j];\n            while ((i < intervals.size()) && (intervals[i][0] <= query)) {\n                pq.push({intervals[i][1] - intervals[i][0] + 1, intervals[i][1]});\n                i++;\n            }\n            while (!pq.empty() && (pq.top()[1] < query)) pq.pop();\n            result[index] = (pq.empty()) ? (-1) : (pq.top()[0]);\n        }\n        return result;\n    }\n};"
     }
   ],
-  "Greedy": [],
+  "Greedy": [
+    {
+      "title": "53. Maximum Subarray",
+      "link": "https://leetcode.com/problems/maximum-subarray",
+      "code": "class Solution {\npublic:\n    // time/space: O(n)/O(1)\n    int maxSubArray(vector<int>& nums) {\n        int sum = 0, maxSum = nums.front();\n        for (auto& num : nums) {\n            sum += num;\n            maxSum = max(maxSum, sum);\n            if (sum < 0) sum = 0;\n        }\n        return maxSum;\n    }\n};"
+    },
+    {
+      "title": "134. Gas Station",
+      "link": "https://leetcode.com/problems/gas-station",
+      "code": "class Solution {\npublic:\n    // time/space: O(n)/O(1)\n    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {\n        long long totalGas = accumulate(gas.begin(), gas.end(), 0LL);\n        long long totalCost = accumulate(cost.begin(), cost.end(), 0LL);\n        if (totalGas < totalCost) return -1;\n        int remain = 0, result = 0;\n        for (int i = 0; i < gas.size(); i++) {\n            remain += (gas[i] - cost[i]);\n            if (remain < 0) remain = 0, result = i + 1;\n        }\n        return result;\n    }\n};"
+    },
+    {
+      "title": "678. Valid Parenthesis String",
+      "link": "https://leetcode.com/problems/valid-parenthesis-string",
+      "code": "class Solution {\npublic:\n    // time/space: O(n)/O(n)\n    bool checkValidString(string s) {\n        stack<int> left, star;\n        for (int i = 0; i < s.size(); i++) {\n            if (s[i] == '(') left.push(i);\n            else if (s[i] == '*') star.push(i);\n            else {\n                if (!left.empty()) left.pop();\n                else if (!star.empty()) star.pop();\n                else return false;\n            }\n        }\n        while (!left.empty() && !star.empty()) {\n            if (left.top() < star.top()) left.pop(), star.pop();\n            else return false;\n        }\n        return left.empty();\n    }\n};"
+    }
+  ],
   "Backtracking": [],
   "Graphs": [],
   "Union Find": [
