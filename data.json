@@ -150,5 +150,12 @@
   ],
   "Dynamic Programming": [],
   "Bit Manipulation": [],
-  "Math & Geometry": []
+  "Math & Geometry": [],
+  "Segment Tree": [
+    {
+      "title": "3479. Fruits Into Baskets III",
+      "link": "https://leetcode.com/problems/fruits-into-baskets-iii",
+      "code": "class Solution {\npublic:\n    // time/space: O(nlogn)/O(n)\n    int numOfUnplacedFruits(vector<int>& fruits, vector<int>& baskets) {\n        int n = fruits.size();\n        vector<int> tree(4 * n, INVALID);\n        for (int i = 0; i < n; i++) updateTree(tree, 1, 0, n - 1, i, baskets[i]);\n\n        int unplaced = 0;\n        for (auto& fruit : fruits) {\n            int index = findBasket(tree, 1, 0, n - 1, fruit);\n            if (index == INVALID) unplaced++;\n            else updateTree(tree, 1, 0, n - 1, index, INVALID);\n        }\n        return unplaced;\n    }\nprivate:\n    const int INVALID = -1;\n    void updateTree(vector<int>& tree, int node, int start, int end, int index, int value) {\n        // terminate\n        if (start == end) {\n            tree[node] = value;\n            return;\n        }\n\n        // enumerate\n        int mid = start + (end - start) / 2;\n        if (index <= mid) updateTree(tree, 2 * node, start, mid, index, value);\n        else updateTree(tree, 2 * node + 1, mid + 1, end, index, value);\n        tree[node] = max(tree[2 * node], tree[2 * node + 1]);\n    }\n    int findBasket(vector<int>& tree, int node, int start, int end, int value) {\n        // terminate\n        if (tree[node] < value) return INVALID;\n        if (start == end) return start;\n\n        // enumerate\n        int mid = start + (end - start) / 2;\n        if (tree[2 * node] >= value) return findBasket(tree, 2 * node, start, mid, value);\n        return findBasket(tree, 2 * node + 1, mid + 1, end, value);\n    }\n};"
+    }
+  ]
 }
