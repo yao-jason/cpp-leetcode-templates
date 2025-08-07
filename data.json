@@ -139,7 +139,28 @@
       "code": "class Solution {\npublic:\n    // time/space: O(n)/O(n)\n    bool checkValidString(string s) {\n        stack<int> left, star;\n        for (int i = 0; i < s.size(); i++) {\n            if (s[i] == '(') left.push(i);\n            else if (s[i] == '*') star.push(i);\n            else {\n                if (!left.empty()) left.pop();\n                else if (!star.empty()) star.pop();\n                else return false;\n            }\n        }\n        while (!left.empty() && !star.empty()) {\n            if (left.top() < star.top()) left.pop(), star.pop();\n            else return false;\n        }\n        return left.empty();\n    }\n};"
     }
   ],
-  "Backtracking": [],
+  "Backtracking": [
+    {
+      "title": "40. Combination Sum II",
+      "link": "https://leetcode.com/problems/combination-sum-ii",
+      "code": "class Solution {\npublic:\n    // time/space: O(nlogn + n * 2 ^ n)/O(n * n ^ 2)\n    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {\n        vector<vector<int>> result;\n        vector<int> hold;\n        sort(candidates.begin(), candidates.end());\n        helper(candidates, result, hold, target, 0);\n        return result;\n    }\nprivate:\n    void helper(vector<int>& candidates, vector<vector<int>>& result, vector<int>& hold, int target, int i) {\n        // terminate\n        if (target == 0) {\n            result.push_back(hold);\n            return;\n        }\n        if (target < 0) return;\n        if (i >= candidates.size()) return;\n\n        // enumerate\n        hold.push_back(candidates[i]);\n        helper(candidates, result, hold, target - candidates[i], i + 1);\n        hold.pop_back();\n        while (((i + 1) < candidates.size()) && (candidates[i] == candidates[i + 1])) i++;\n        helper(candidates, result, hold, target, i + 1);\n    }\n};"
+    },
+    {
+      "title": "46. Permutations",
+      "link": "https://leetcode.com/problems/permutations",
+      "code": "class Solution {\npublic:\n    // time/space: O(n * n!)/O(n * n!)\n    vector<vector<int>> permute(vector<int>& nums) {\n        vector<vector<int>> result;\n        helper(nums, result, 0);\n        return result;\n    }\nprivate:\n    void helper(vector<int>& nums, vector<vector<int>>& result, int i) {\n        // terminate\n        if (i == nums.size()) {\n            result.push_back(nums);\n            return;\n        }\n\n        // enumerate\n        for (int j = i; j < nums.size(); j++) {\n            swap(nums[i], nums[j]);\n            helper(nums, result, i + 1);\n            swap(nums[i], nums[j]);\n        }\n    }\n};"
+    },
+    {
+      "title": "131. Palindrome Partitioning",
+      "link": "https://leetcode.com/problems/palindrome-partitioning",
+      "code": "class Solution {\npublic:\n    // time/space: O(n * 2 ^ n)/O(n * 2 ^ n)\n    vector<vector<string>> partition(string s) {\n        vector<vector<string>> result;\n        vector<string> substrings;\n        helper(s, result, substrings, 0);\n        return result;\n    }\nprivate:\n    void helper(string& s, vector<vector<string>>& result, vector<string>& substrings, int i) {\n        // terminate\n        if (i == s.size()) {\n            result.push_back(substrings);\n            return;\n        }\n\n        // enumerate\n        string substring = \"\";\n        for (int j = i; j < s.size(); j++) {\n            substring.push_back(s[j]);\n            if (isPalindrome(substring)) {\n                substrings.push_back(substring);\n                helper(s, result, substrings, j + 1);\n                substrings.pop_back();\n            }\n        }\n    }\n    bool isPalindrome(string& s) {\n        int l = 0, r = s.size() - 1;\n        while (l < r) {\n            if (s[l] != s[r]) return false;\n            l++, r--;\n        }\n        return true;\n    }\n};"
+    },
+    {
+      "title": "51. N-Queens",
+      "link": "https://leetcode.com/problems/n-queens",
+      "code": "class Solution {\npublic:\n    // time/space: O(n * n * n!)/O(n * n)\n    vector<vector<string>> solveNQueens(int n) {\n        vector<vector<string>> result;\n        vector<string> board(n, string(n, '.'));\n        backtrack(n, result, board, 0);\n        return result;\n    }\nprivate:\n    void backtrack(int n, vector<vector<string>>& result, vector<string>& board, int row) {\n        // terminate\n        if (row == n) {\n            result.push_back(board);\n            return;\n        }\n\n        // enumerate\n        for (int col = 0; col < n; col++) {\n            if (canPlace(board, row, col)) {\n                board[row][col] = 'Q';\n                backtrack(n, result, board, row + 1);\n                board[row][col] = '.';\n            }\n        }\n    }\n    bool canPlace(vector<string>& board, int row, int col) {\n        for (int r = 0; r < row; r++) {\n            if (board[r][col] == 'Q') return false;\n            int dr = row - r;\n            if (((col - dr) >= 0) && (board[r][col - dr] == 'Q')) return false;\n            if (((col + dr) < board[0].size()) && (board[r][col + dr] == 'Q')) return false;\n        }\n        return true;\n    }\n};"
+    }
+  ],
   "Graphs": [],
   "Union Find": [
     {
