@@ -194,7 +194,18 @@
     }
   ],
   "Dynamic Programming": [],
-  "Bit Manipulation": [],
+  "Bit Manipulation": [
+    {
+      "title": "338. Counting Bits",
+      "link": "https://leetcode.com/problems/counting-bits",
+      "code": "class Solution {\npublic:\n    // time/space: O(n)/O(n)\n    vector<int> countBits(int n) {\n        vector<int> dp(n + 1);\n        dp[0] = 0;\n        for (int i = 1; i <= n; i++) dp[i] = dp[i >> 1] + (i & 1);\n        return dp;\n    }\n};"
+    },
+    {
+      "title": "7. Reverse Integer",
+      "link": "https://leetcode.com/problems/reverse-integer",
+      "code": "class Solution {\npublic:\n    // time/space: O(logn)/O(1)\n    int reverse(int x) {\n        int result = 0;\n        while (x != 0) {\n            int digit = x % 10;\n            if (result > MAX_DIV_10) return 0;\n            if ((result == MAX_DIV_10) && (digit > MAX_MOD_10)) return 0;\n            if (result < MIN_DIV_10) return 0;\n            if ((result == MIN_DIV_10) && (digit < MIN_MOD_10)) return 0;\n            result = 10 * result + digit;\n            x /= 10;\n        }\n        return result;\n    }\nprivate:\n    const int MAX_DIV_10 = INT_MAX / 10;\n    const int MAX_MOD_10 = INT_MAX % 10;\n    const int MIN_DIV_10 = INT_MIN / 10;\n    const int MIN_MOD_10 = INT_MIN % 10;\n};"
+    }
+  ],
   "Math & Geometry": [],
   "Segment Tree": [
     {
