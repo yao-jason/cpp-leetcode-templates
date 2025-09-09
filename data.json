@@ -193,7 +193,23 @@
       "code": "class Solution {\npublic:\n    // time/space: O(Ek)/O(E + V)\n    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {\n        vector<vector<pair<int, int>>> graph(n);\n        for (auto& flight : flights) graph[flight[0]].push_back({flight[1], flight[2]});\n\n        vector<int> bestPrice(n, INT_MAX);\n        queue<pair<int, int>> q;\n        bestPrice[src] = 0;\n        q.push({src, 0});\n        int step = 0;\n        while (!q.empty() && (step <= k)) {\n            int size = q.size();\n            for (int i = 0; i < size; i++) {\n                auto [currCity, currPrice] = q.front();\n                q.pop();\n                for (auto& [nextCity, price] : graph[currCity]) {\n                    int nextPrice = currPrice + price;\n                    if (nextPrice >= bestPrice[nextCity]) continue;\n                    bestPrice[nextCity] = nextPrice;\n                    q.push({nextCity, nextPrice});\n                }\n            }\n            step++;\n        }\n        return (bestPrice[dst] == INT_MAX) ? -1 : bestPrice[dst];\n    }\n};"
     }
   ],
-  "Dynamic Programming": [],
+  "Dynamic Programming": [
+    {
+      "title": "152. Maximum Product Subarray",
+      "link": "https://leetcode.com/problems/maximum-product-subarray",
+      "code": "class Solution {\npublic:\n    // time/space: O(n)/O(1)\n    int maxProduct(vector<int>& nums) {\n        int result = nums.front(), seenMax = nums.front(), seenMin = nums.front();\n        for (int i = 1; i < nums.size(); i++) {\n            if (nums[i] < 0) swap(seenMax, seenMin);\n            seenMax = max(nums[i], seenMax * nums[i]);\n            seenMin = min(nums[i], seenMin * nums[i]);\n            result = max(result, seenMax);\n        }\n        return result;\n    }\n};"
+    },
+    {
+      "title": "213. House Robber II",
+      "link": "https://leetcode.com/problems/house-robber-ii",
+      "code": "class Solution {\npublic:\n    // time/space: O(n)/O(1)\n    int rob(vector<int>& nums) {\n        int n = nums.size();\n        return max(nums[0] + helper(nums, 2, n - 2), helper(nums, 1, n - 1));\n    }\nprivate:\n    int helper(vector<int>& nums, int start, int end) {\n        if (start >= nums.size()) return 0;\n        if (end < start) return 0;\n        int dp0 = 0, dp1 = 0;\n        for (int i = start; i <= end; i++) {\n            int dp2 = max(dp0 + nums[i], dp1);\n            dp0 = dp1, dp1 = dp2;\n        }\n        return dp1;\n    }\n};"
+    },
+    {
+      "title": "309. Best Time to Buy and Sell Stock with Cooldown",
+      "link": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/",
+      "code": "class Solution {\npublic:\n    // time/space: O(n)/O(n)\n    int maxProfit(vector<int>& prices) {\n        int n = prices.size();\n        vector<vector<int>> dp(2, vector<int>(n, -1));\n        return helper(prices, dp, 0, 0);\n    }\nprivate:\n    int helper(vector<int>& prices, vector<vector<int>>& dp, int isHold, int day) {\n        // terminate\n        if (day >= prices.size()) return 0;\n        if (dp[isHold][day] != -1) return dp[isHold][day];\n\n        // enumerate\n        if (isHold == 0) {\n            int buy = -prices[day] + helper(prices, dp, 1, day + 1);\n            int not_buy = helper(prices, dp, 0, day + 1);\n            return dp[isHold][day] = max(buy, not_buy);\n        }\n        int sell = prices[day] + helper(prices, dp, 0, day + 2);\n        int not_sell = helper(prices, dp, 1, day + 1);\n        return dp[isHold][day] = max(sell, not_sell);\n    }\n};"
+    }
+  ],
   "Bit Manipulation": [
     {
       "title": "338. Counting Bits",
